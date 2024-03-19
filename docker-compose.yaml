@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  weather:
+    image: weather-dev
+    container_name: weather-dev
+    build: ./weather
+    # build:
+    #   context: ./weather
+    #   target: develop
+    ports:
+      - 5678:5678
+    volumes:
+      - .:/weather
+    # environment:
+    # entrypoint: [ "python", "-m", "debugpy", "--listen", "0.0.0.0:5678", "-m", "spike.py",  "--wait-for-client", "--multiprocess", "-m"]
+    networks:
+      - weather-dev
+
+networks:
+  weather-dev:
+    name: weather-dev
