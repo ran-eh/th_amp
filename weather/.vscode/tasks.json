@@ -9,7 +9,7 @@
 				"tag": "weather:latest",
 				"dockerfile": "${workspaceFolder}/Dockerfile",
 				"context": "${workspaceFolder}",
-				"pull": true
+				"pull": true,
 			}
 		},
 		{
@@ -19,7 +19,10 @@
 				"docker-build"
 			],
 			"python": {
-				"file": "spike.py"
+				"file": "weather.py"
+			},
+			"dockerRun": {
+				"network": "th_amp_default"
 			}
 		}
 	]
