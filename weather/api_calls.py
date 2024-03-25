@@ -1,12 +1,13 @@
 import pandas as pd
 import requests
 
+url_base = "https://api.tomorrow.io/v4"
 class WeatherAPI:
-    def __init__(self, api_key) -> None:
+    def __init__(self, api_key):
         self.api_key = api_key
 
     def get_realtime(self, lat, lon):
-        url = f"https://api.tomorrow.io/v4/weather/realtime?location={lat}%2C%20{lon}&units=metric&apikey={self.api_key}"
+        url = f"{url_base}/weather/realtime?location={lat}%2C%20{lon}&units=metric&apikey={self.api_key}"
 
         headers = {"accept": "application/json"}
 
@@ -18,7 +19,7 @@ class WeatherAPI:
 
 
     def get_timelines(self, lat, lon):
-        url = f"https://api.tomorrow.io/v4/timelines?apikey={self.api_key}"
+        url = f"{url_base}/timelines?apikey={self.api_key}"
 
         payload = {
             "location": f"{lat},{lon}",

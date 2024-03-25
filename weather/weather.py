@@ -1,10 +1,10 @@
-import numpy as np
 import os
-import pandas as pd
-from sqlalchemy import create_engine, DateTime
+from sqlalchemy import DateTime
 import time
 
 from api_calls import WeatherAPI
+from get_locations import get_locations
+from db import DB
 
 
 host = os.environ["PG_HOST"]
@@ -13,58 +13,30 @@ user = os.environ["PG_USER"]
 pw = os.environ["PG_PASSWORD"]
 api_key = os.environ["API_KEY"]
 
-locations = np.array([
-    ('25.8600','-97.4200'),
-    ('25.9000','-97.5200'),
-    ('25.9000','-97.4800'),
-    ('25.9000','-97.4400'),
-    ('25.9000','-97.4000'),
-    ('25.9200','-97.3800'),
-    ('25.9400','-97.5400'),
-    ('25.9400','-97.5200'),
-    ('25.9400','-97.4800'),
-    ('25.9400','-97.4400'),
-])
-
-locations_df = pd.DataFrame.from_records(locations, columns=["lat", "lon"])
-locations_df.insert(0, 'id', range(len(locations_df)))
-# For debugging, uncomment line below to avoid hitting tomorrow.io free tear rate limit
-locations_df = locations_df.head(2)
+locations_df = get_locations()
 print(locations_df)
 
-connect = f"postgresql+psycopg2://{user}:{pw}@{host}:5432/{db}"
-engine = create_engine(connect)
-locations_df.to_sql(
-    'locations', 
-    con=engine, 
-    index=False, 
-    if_exists='replace'
-)
-
+db = DB(host, db, user, pw)
 api = WeatherAPI(api_key)
 for ix, row in locations_df.iterrows():
     lat = str(row["lat"])
     lon = str(row["lon"])
     if_exists = 'replace' if ix == 0 else 'append'
 
-    df = api.get_realtime(lat, lon)
-    
-    df.to_sql(
-        'realtime', 
-        con=engine, 
-        index=False, 
-        if_exists=if_exists
-    )
-    df = api.get_timelines(lat, lon)
+    df = api.get_realtime(lat, lon)    
+    db.to_table(df, 'realtime', if_exists, dtype={"time": DateTime()})
 
-    df.to_sql(
-        'timeline', 
-        con=engine, 
-        index=False, 
-        if_exists=if_exists,
-        dtype={"startTime": DateTime()}
-    )
-    print("to_sql() done (sqlalchemy)")
+    df = api.get_timelines(lat, lon)
+    db.to_table(df, 'timeline', if_exists, dtype={"startTime": DateTime()})
+
+    # df.to_sql(
+    #     'timeline', 
+    #     con=engine, 
+    #     index=False, 
+    #     if_exists=if_exists,
+    #     dtype={"startTime": DateTime()}
+    # )
+    # print("to_sql() done (sqlalchemy)")
 
     os.environ['IS_HEALTHY'] = 'YES'
     print(os.environ)
