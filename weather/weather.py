@@ -4,7 +4,7 @@ import pandas as pd
 from sqlalchemy import create_engine, DateTime
 import time
 
-import api_calls as api
+from api_calls import WeatherAPI
 
 
 host = os.environ["PG_HOST"]
@@ -41,13 +41,13 @@ locations_df.to_sql(
     if_exists='replace'
 )
 
-
+api = WeatherAPI(api_key)
 for ix, row in locations_df.iterrows():
     lat = str(row["lat"])
     lon = str(row["lon"])
     if_exists = 'replace' if ix == 0 else 'append'
 
-    df = api.get_realtime(api_key, lat, lon)
+    df = api.get_realtime(lat, lon)
     
     df.to_sql(
         'realtime', 
@@ -55,7 +55,7 @@ for ix, row in locations_df.iterrows():
         index=False, 
         if_exists=if_exists
     )
-    df = api.get_timelines(api_key, lat, lon)
+    df = api.get_timelines(lat, lon)
 
     df.to_sql(
         'timeline', 
