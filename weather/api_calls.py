@@ -5,6 +5,7 @@ url_base = "https://api.tomorrow.io/v4"
 class WeatherAPI:
     def __init__(self, api_key):
         self.api_key = api_key
+        self.api_key = 'NPbBxunJXWpykpE2kISa3rSV00WFgJQu'
 
     def get_realtime(self, lat, lon):
         url = f"{url_base}/weather/realtime?location={lat}%2C%20{lon}&units=metric&apikey={self.api_key}"

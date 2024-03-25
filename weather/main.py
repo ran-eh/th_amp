@@ -28,19 +28,6 @@ for ix, row in locations_df.iterrows():
 
     df = api.get_timelines(lat, lon)
     db.to_table(df, 'timeline', if_exists, dtype={"startTime": DateTime()})
-
-    # df.to_sql(
-    #     'timeline', 
-    #     con=engine, 
-    #     index=False, 
-    #     if_exists=if_exists,
-    #     dtype={"startTime": DateTime()}
-    # )
-    # print("to_sql() done (sqlalchemy)")
-
-    os.environ['IS_HEALTHY'] = 'YES'
-    print(os.environ)
-    
 time.sleep(100000)
 
 

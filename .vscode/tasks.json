@@ -19,7 +19,7 @@
 				"docker-build"
 			],
 			"python": {
-				"file": "weather.py",
+				"file": "main.py",
 			},
 			"dockerRun": {
 				"network": "th_amp_default",
