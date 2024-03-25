@@ -4,6 +4,7 @@ asttokens==2.4.1
 attrs==23.2.0
 beautifulsoup4==4.12.3
 bleach==6.1.0
+bokeh
 certifi==2024.2.2
 chardet==3.0.4
 charset-normalizer==3.3.2
@@ -21,6 +22,8 @@ fonttools==4.49.0
 greenlet==3.0.3
 idna==2.8
 ipykernel==6.29.2
+ipympl
+ipywidgets
 ipynb-py-convert==0.4.6
 ipython==8.22.1
 ipython-genutils==0.2.0
@@ -56,6 +59,7 @@ prometheus_client==0.20.0
 prompt-toolkit==3.0.43
 psutil==5.9.8
 psycopg2-binary==2.9.9
+psycopg
 ptyprocess==0.7.0
 pure-eval==0.2.2
 Pygments==2.17.2
