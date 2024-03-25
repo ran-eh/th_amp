@@ -7,8 +7,8 @@
 			"platform": "python",
 			"dockerBuild": {
 				"tag": "weather:latest",
-				"dockerfile": "${workspaceFolder}/Dockerfile",
-				"context": "${workspaceFolder}",
+				"dockerfile": "${workspaceFolder}/weather/Dockerfile",
+				"context": "${workspaceFolder}/weather",
 				"pull": true,
 			}
 		},
@@ -19,11 +19,19 @@
 				"docker-build"
 			],
 			"python": {
-				"file": "weather.py"
+				"file": "weather.py",
 			},
 			"dockerRun": {
 				"network": "th_amp_default",
-				"envFiles": ["../env_python"]
+			},
+			"options": {
+				"env": {
+					"PG_HOST": "db",
+					"PG_DATABASE": "weather",
+					"PG_USER": "postgres",
+					"PG_PASSWORD": "postgres",
+					"API_KEY": "MD8gOfRQx4yZ0lS8CfXv6OkVtBLCIdw8",
+				}
 			}
 		}
 	]

@@ -3,11 +3,19 @@
         
 
         {
-            "name": "Python Debugger: Current File",
+            "name": "Python Debugger: weather.py",
             "type": "debugpy",
             "request": "launch",
+            "cwd": "${workspaceFolder}/weather",
             "program": "weather.py",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "env": {
+                "PG_HOST": "db",
+                "PG_DATABASE": "weather",
+                "PG_USER": "postgres",
+                "PG_PASSWORD": "postgres",
+                "API_KEY": "MD8gOfRQx4yZ0lS8CfXv6OkVtBLCIdw8",
+           }
         },
         {
             "name": "Docker: Python - General",
@@ -17,12 +25,12 @@
             "python": {
                 "pathMappings": [
                     {
-                        "localRoot": "${workspaceFolder}",
+                        "localRoot": "${workspaceFolder}/weather",
                         "remoteRoot": "/app"
-                    }
+                    },
                 ],
                 "projectType": "general"
-            }
+            },
         }
     ]
 }
