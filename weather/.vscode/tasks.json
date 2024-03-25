@@ -22,7 +22,8 @@
 				"file": "weather.py"
 			},
 			"dockerRun": {
-				"network": "th_amp_default"
+				"network": "th_amp_default",
+				"envFiles": ["../env_python"]
 			}
 		}
 	]

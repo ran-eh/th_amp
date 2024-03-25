@@ -14,7 +14,12 @@ services:
       - .:/weather
     depends_on:
       - db
-    # environment:
+    environment:
+      PG_HOST: db
+      PG_DATABASE: weather
+      PG_USER: postgres
+      PG_PASSWORD: postgres
+      API_KEY: MD8gOfRQx4yZ0lS8CfXv6OkVtBLCIdw8 
     # entrypoint: [ "python", "-m", "debugpy", "--listen", "0.0.0.0:5678", "-m", "weather.py",  "--wait-for-client", "--multiprocess", "-m"]
     # networks:
     #   - weather-dev
@@ -34,6 +39,7 @@ services:
       - type: volume
         source: postgres_store
         target: /var/lib/postgresql/data
+  
   jupyter:
     build: ./jupyter
     image: jupyter/minimal-notebook
@@ -42,10 +48,15 @@ services:
       - 8888:8888
     volumes:
       - ./jupyter/:/jupyter
-
     depends_on:
       - db
-
+      - weather
+    environment:
+      PG_HOST: db
+      PG_DATABASE: weather
+      PG_USER: postgres
+      PG_PASSWORD: postgres
+      API_KEY: MD8gOfRQx4yZ0lS8CfXv6OkVtBLCIdw8 
 
 volumes:
   postgres_store:

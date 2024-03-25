@@ -1,19 +1,9 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[13]:
-
-
 import numpy as np
 import os
 import pandas as pd
 # import psycopg
 import requests
-from sqlalchemy import create_engine, DateTime
-
-
-# In[2]:
-
+from sqlalchemy import create_engine
 
 os.environ["PG_HOST"] = "db"
 os.environ["PG_DATABASE"] = "weather"
@@ -21,20 +11,18 @@ os.environ["PG_USER"] = "postgres"
 os.environ["PG_PASSWORD"] = "postgres"
 os.environ["API_KEY"] = "MD8gOfRQx4yZ0lS8CfXv6OkVtBLCIdw8"
 
-
-
-# In[3]:
-
-
 host = os.environ["PG_HOST"]
 db = os.environ["PG_DATABASE"]
 user = os.environ["PG_USER"]
 pw = os.environ["PG_PASSWORD"]
 api_key = os.environ["API_KEY"]
 
-
-# In[4]:
-
+# param_dic = {
+#     "host"      : "db",
+#     "database"  : "weather",
+#     "user"      : "postgres",
+#     "password"  : "postgres"
+# }
 
 locations = np.array([
     ('25.8600','-97.4200'),
@@ -52,11 +40,9 @@ locations = np.array([
 locations_df = pd.DataFrame.from_records(locations, columns=["lat", "lon"])
 locations_df.insert(0, 'id', range(len(locations_df)))
 locations_df = locations_df.head(2)
-display(locations_df)
+print(locations_df)
 
-
-# In[5]:
-
+# TODO: Use rate limiter, e.g. https://requests-ratelimiter.readthedocs.io/en/stable/
 
 connect = f"postgresql+psycopg2://{user}:{pw}@{host}:5432/{db}"
 engine = create_engine(connect)
@@ -68,37 +54,15 @@ locations_df.to_sql(
 )
 
 
-# In[15]:
-
-
 for ix, row in locations_df.iterrows():
     lat = str(row["lat"])
     lon = str(row["lon"])
     if_exists = 'replace' if ix == 0 else 'append'
 
-    url = f"https://api.tomorrow.io/v4/weather/realtime?location={lat}%2C%20{lon}&units=metric&apikey={api_key}"
-    
-    headers = {"accept": "application/json"}
-    
-    response = requests.get(url, headers=headers)
-    df = pd.json_normalize(response.json()["data"])
-    df.insert(0, 'lat', lat)
-    df.insert(1, 'lon', lon)
-    display(df)
-
-    
-    df.to_sql(
-        'realtime', 
-        con=engine, 
-        index=False, 
-        if_exists=if_exists
-    )
-    print("to_sql() done (sqlalchemy)")
-
     url = "https://api.tomorrow.io/v4/timelines?apikey=" + api_key
     
     payload = {
-        "location": f"{lat},{lon}", 
+        "location": f"{lat},{lon}",
         "fields": ["temperature", "windSpeed"],
         "units": "metric",
         "timesteps": ["1h"],
@@ -120,29 +84,35 @@ for ix, row in locations_df.iterrows():
     print(df)
     df = pd.json_normalize(intervals)
     print(df)
-    df.insert(0, 'lat', lat)
-    df.insert(1, 'lon', lon)
-    df
-
     df.to_sql(
         'timeline', 
         con=engine, 
         index=False, 
-        if_exists=if_exists,
-        dtype={"startTime": DateTime()}
+        if_exists=if_exists
     )
     print("to_sql() done (sqlalchemy)")
     
     # url = "https://api.tomorrow.io/v4/weather/realtime?location=42.3478%2C%20-71.0466&units=metric&apikey" + api_key
+    url = "https://api.tomorrow.io/v4/weather/realtime?location=" + lat + "%2C%20" + lon + "&units=metric&apikey=" + api_key
+    
+    headers = {"accept": "application/json"}
+    
+    response = requests.get(url, headers=headers)
+    # values = [response.json()["data"]]
+    
+    # df = pd.DataFrame(values)
+    df = pd.json_normalize(response.json())
+    
+    
+    df.to_sql(
+        'realtime', 
+        con=engine, 
+        index=False, 
+        if_exists=if_exists
+    )
+    print("to_sql() done (sqlalchemy)")
     
     # json_str = json.dumps(response_json["data"]["timelines"], indent=2)
     
     # print(json_str)
     # print(response.json())
-
-
-# In[ ]:
-
-
-
-

@@ -1,0 +1,5 @@
+PG_HOST=db
+PG_DATABASE=weather
+PG_USER=postgres
+PG_PASSWORD=postgres
+API_KEY=MD8gOfRQx4yZ0lS8CfXv6OkVtBLCIdw8
