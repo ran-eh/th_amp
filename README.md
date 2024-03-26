@@ -30,10 +30,10 @@ With the docker daemon running, start the containers
 ```
 docker compose up -d
 ```
-Open the notebook
-```
+Open the notebook below, then click the `restart kernel and run all cells` button.
+
 http://127.0.0.1:8888/lab/tree/dash.ipynb
-```
+
 
 # Developmemt environment
 I used vscode, and config files for it are included in the repo.  
