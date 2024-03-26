@@ -2,11 +2,15 @@
 
 # Choices
 ## Approach
-I am a fan of using the agile/YAGNI in data design.  I prefer to start small and simple, trusting that additional need will reveal themselves over time.  In this project as well, I went for simple and light weight whenever possible.
+I am a fan of using the agile/YAGNI in data design.  I prefer to start small and simple, trusting that additional needs will reveal themselves over time.  In this project as well, I went for simple and light weight whenever possible.
 ## Database
-I chose Postgres for its ease of installation and use.  I already have experience with rolling it out on docker, making it an easy choice to me.
+Postgres is a good non-cloud starter system for any application.  This decision may be reconsidered later should the size of the data increase
+and analytics needs become more complex.  At that point analyics data may
+be split off into a columnar database, while Postgres will continue to
+be used as the application database.
+
 ## Data ingestion and modeling
-The requirements comfortably match the limitations of API service free tier.  I chose use the realtime and timeline endpoint, and store the results in a schema that closely matches their output.  This allowed me to simply use `pandas.DataFrame.to_sql`, and not worry about schema maintenance.
+The requirements comfortably match the limitations of the API service' free tier.  I chose to use the realtime and timeline endpoints, and store the results in a schema that closely matches their output.  This allowed me to simply use `pandas.DataFrame.to_sql`, and not worry about schema maintenance for now, as to_sql both created and populates the table as needed.
 
 As a starting point, I decided to overwrite data table on every ingestion.  However, extensing it to store historical data is easy should the need arise down the line.
 
