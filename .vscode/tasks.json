@@ -12,6 +12,7 @@
 				"pull": true,
 			}
 		},
+/*
 		{
 			"type": "docker-run",
 			"label": "docker-run: debug",
@@ -34,5 +35,6 @@
 				}
 			}
 		}
+*/
 	]
 }

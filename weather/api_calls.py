@@ -6,6 +6,7 @@ url_base = "https://api.tomorrow.io/v4"
 class WeatherAPI:
     def __init__(self, api_key):
         self.api_key = api_key
+        # Alternate api key, in case the main one runs out
         # self.api_key = 'NPbBxunJXWpykpE2kISa3rSV00WFgJQu'
         self.log = logging.getLogger(__name__)
 

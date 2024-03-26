@@ -1,0 +1,6 @@
+debugpy
+requests 
+numpy
+pandas
+sqlalchemy
+psycopg2-binary

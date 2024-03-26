@@ -12,7 +12,7 @@ db = os.environ["PG_DATABASE"]
 user = os.environ["PG_USER"]
 pw = os.environ["PG_PASSWORD"]
 api_key = os.environ["API_KEY"]
-period_seconds =  os.environ.get("WAIT_SEONDS", 60 * 2)
+period_seconds =  os.environ.get("WAIT_SEONDS", 60 * 60)
 
 def run():
     log.info("Starting run")
