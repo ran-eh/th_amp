@@ -2,8 +2,8 @@ version: "3.9"
 
 services:
   weather:
-    image: weather-dev
-    container_name: weather-dev
+    image: weather-app
+    container_name: weather-app
     build: ./weather
     # build:
     #   context: ./weather
@@ -21,11 +21,11 @@ services:
       PG_PASSWORD: postgres
       API_KEY: MD8gOfRQx4yZ0lS8CfXv6OkVtBLCIdw8 
     # entrypoint: [ "python", "-m", "debugpy", "--listen", "0.0.0.0:5678", "-m", "weather.py",  "--wait-for-client", "--multiprocess", "-m"]
-    # networks:
-    #   - weather-dev
+    networks:
+      - weather-network
   db:
     image: postgres:13-alpine
-    # build: ./db
+    container_name: weather-db
     ports:
       - "5432:5432"
     environment:
@@ -35,6 +35,8 @@ services:
       PG_PASSWORD: postgres
     # command: ["postgres", "-c", "log_statement=all", "-c", "log_destination=stderr"]
     command: ["postgres", "-c", "log_statement=all"]
+    networks:
+      - weather-network
     volumes:
       - type: volume
         source: postgres_store
@@ -42,7 +44,9 @@ services:
   
   jupyter:
     build: ./jupyter
-    image: jupyter/minimal-notebook
+    image: weather-jupyter
+    container_name: weather-jupyter
+
     command: start-notebook.sh --NotebookApp.token=''
     ports:
       - 8888:8888
@@ -57,11 +61,12 @@ services:
       PG_USER: postgres
       PG_PASSWORD: postgres
       API_KEY: MD8gOfRQx4yZ0lS8CfXv6OkVtBLCIdw8 
+    networks:
+      - weather-network
 
 volumes:
   postgres_store:
 
-
-# networks:
-#   weather-dev:
-#     name: weather-dev
+networks:
+  weather-network:
+    name: weather-network
