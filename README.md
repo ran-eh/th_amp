@@ -2,7 +2,7 @@
 
 # Choices
 ## Approach
-The agile/YAGNI approach, which is common in software engineering, but less so in data systems.  Despite this, I prefer to start small and simple, trusting that additional need will reveal themselves over time.  In the project as well, I went for simple and light weight whenever possible.
+I am a fan of using the agile/YAGNI in data design.  I prefer to start small and simple, trusting that additional need will reveal themselves over time.  In this project as well, I went for simple and light weight whenever possible.
 ## Database
 I chose Postgres for its ease of installation and use.  I already have experience with rolling it out on docker, making it an easy choice to me.
 ## Data ingestion and modeling
