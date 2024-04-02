@@ -38,7 +38,7 @@ http://127.0.0.1:8888/lab/tree/dash.ipynb
 # Developmemt environment
 I used vscode, and config files for it are included in the repo.  
 
-## Debugging te Python app
+## Debugging the Python app
 To make postgres available locally, add the following line to /etc/hosts
 ```
 sudo echo 127.0.0.1 db >> /etc/hosts
